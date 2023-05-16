@@ -18,12 +18,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
       
-      - name: Setup kramdown-rfc2629 and xml2rfc
+      - name: Setup xml2rfc
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ruby ruby-dev ruby-bundler
-          gem install kramdown-rfc2629
           sudo apt-get update
           sudo apt-get install -y xml2rfc
 
