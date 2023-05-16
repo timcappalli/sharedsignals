@@ -18,9 +18,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
+      - name: setup Ruby
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7
+      - name: Setup kramdown-rfc
+        run: gem install kramdown-rfc
       
       - name: Setup xml2rfc
         run: |
