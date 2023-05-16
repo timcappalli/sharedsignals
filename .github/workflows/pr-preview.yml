@@ -1,0 +1,46 @@
+# .github/workflows/preview.yml
+name: Deploy PR previews
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with: 
+          python-version: '3.9'
+          cache: 'pip' # caching pip dependencies
+      
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
+        with:
+          ruby-version: '2.7'
+      
+      - name: Install kramdown-rfc
+        run: gem install kramdown-rfc
+      
+      - name: Install xml2rfc
+        run: pip install xml2rfc
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./build/
