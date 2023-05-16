@@ -32,9 +32,9 @@ jobs:
 
       - name: Make files
         run: |
-          xml2rfc --html openid-risc-profile-specification-1_0.xml
+          xml2rfc --html openid-risc-profile-specification-1_0.xml -o ./output/openid-risc-profile-specification-1_0.html
 
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: ./build/
+          source-dir: ./output/
