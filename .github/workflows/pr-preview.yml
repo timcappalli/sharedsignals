@@ -19,27 +19,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with: 
-          python-version: '3.9'
-          cache: 'pip' # caching pip dependencies
-      
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
-        with:
-          ruby-version: '2.7'
-      
-      - name: Install kramdown-rfc
-        run: gem install kramdown-rfc
-      
-      - name: Install xml2rfc
-        run: pip install xml2rfc
-
-      - name: Install and Build
+      - name: Setup kramdown-rfc2629 and xml2rfc
         run: |
-          npm install
-          npm run build
+          sudo apt-get update
+          sudo apt-get install -y ruby ruby-dev ruby-bundler
+          gem install kramdown-rfc2629
+          sudo apt-get update
+          sudo apt-get install -y xml2rfc
+
+      - name: Make files
+        run: |
+          xml2rfc --html openid-risc-profile-specification-1_0.xml
 
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
